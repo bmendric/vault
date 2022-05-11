@@ -140,15 +140,10 @@ export default Component.extend({
       const isUpload = this.model.uploadPemBundle;
       model
         .save({ adapterOptions: { method } })
-        .then((m) => {
+        .then(() => {
           if (method === 'setSignedIntermediate' || isUpload) {
             this.send('refresh');
             this.flashMessages.success('The certificate for this backend has been updated.');
-          } else if (!m.get('certificate') && !m.get('csr')) {
-            // if there's no certificate, it wasn't generated and the generation was a noop
-            this.flashMessages.warning(
-              'You tried to generate a new root CA, but one currently exists. To replace the existing one, delete it first and then generate again.'
-            );
           }
         })
         .catch((e) => {
